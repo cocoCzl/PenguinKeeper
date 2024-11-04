@@ -1,0 +1,32 @@
+server:
+  # 端口号
+  port: ${DP_SERVER_PORT:8888}
+
+# DataSource Config
+spring:
+  datasource:
+    url: ${META_DB_URL:jdbc:postgresql://localhost:5432/develop}
+    driver-class-name: org.postgresql.Driver
+    username: ${META_DB_USERNAME:develop}
+    password: ${META_DB_PASSWORD:develop}
+
+mybatis:
+  # 配置mybatis xml文件路径
+  mapper-locations: classpath:mapper/*.xml
+  # 配置开启字段映射自动转驼峰
+  configuration:
+    map-underscore-to-camel-case: true
+
+# PageHelper Config
+pagehelper:
+  # 配置数据库方言
+  helperDialect: postgres
+  # 合理化分页参数
+  reasonable: true
+  # 支持通过 Mapper 接口参数来传递分页参数
+  supportMethodsArguments: true
+  params: count=countSql
+
+logging:
+  # logback.xml配置文件的位置
+  config: classpath:logback-spring.xml
