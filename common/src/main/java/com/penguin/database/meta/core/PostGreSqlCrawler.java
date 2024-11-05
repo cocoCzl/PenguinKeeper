@@ -2,6 +2,7 @@ package com.penguin.database.meta.core;
 
 import com.penguin.database.meta.DataBaseCrawler;
 import java.util.Arrays;
+import java.util.Set;
 
 public class PostGreSqlCrawler extends AbstractSchemaCrawler implements DataBaseCrawler {
 
@@ -17,5 +18,11 @@ public class PostGreSqlCrawler extends AbstractSchemaCrawler implements DataBase
                 "msg_prop_t", "pg_catalog", "sys", "utl_encode", "utl_file", "utl_http", "utl_i18n",
                 "utl_mail", "utl_raw",
                 "utl_smtp", "utl_tcp", "utl_url", "public");
+    }
+
+    @Override
+    public Set<String> getTables(String schemaName, String regex, String connectionUrl, String user,
+            String password) {
+        return Set.of();
     }
 }

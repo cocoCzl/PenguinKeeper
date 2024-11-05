@@ -9,28 +9,19 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class AbstractCatalogsCrawler implements DataBaseCrawler {
+public abstract class AbstractCatalogsCrawler extends AbstractCrawler implements DataBaseCrawler {
 
-    protected List<String> systemSchemaList;
-
-    protected List<String> getAllSchemas(Connection connection, DBType dbType) throws SQLException {
+    @Override
+    public List<String> getAllSchemasOrCatalogs(Connection connection, DBType dbType) throws SQLException {
         DatabaseMetaData metaData = connection.getMetaData();
         ResultSet resultSet = metaData.getCatalogs();
         ArrayList<String> list = new ArrayList<>(20);
         while (resultSet.next()) {
             String schema = resultSet.getString(1);
-            if (!isSystemSchema(schema, dbType)) {
+            if (isSystemSchemas(schema, dbType)) {
                 list.add(schema);
             }
         }
         return list;
-    }
-
-    private boolean isSystemSchema(String schema, DBType dbType) {
-        if (dbType.isUppercase()) {
-            return systemSchemaList.contains(schema.toUpperCase());
-        } else {
-            return systemSchemaList.contains(schema.toLowerCase());
-        }
     }
 }

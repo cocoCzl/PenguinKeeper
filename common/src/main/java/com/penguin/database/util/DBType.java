@@ -7,21 +7,23 @@ import lombok.Getter;
 
 @Getter
 public enum DBType {
-    ORACLE(0, "oracle.jdbc.OracleDriver", "jdbc:oracle", true),
-    POSTGRESQL(2, "org.postgresql.Driver", "jdbc:postgresql", false),
-    MYSQL(3, "com.mysql.cj.jdbc.Driver", "jdbc:mysql", false),
-    UNKNOWN(-99, null, "", false);
+    ORACLE(0, "oracle.jdbc.OracleDriver", "jdbc:oracle", true, true),
+    POSTGRESQL(2, "org.postgresql.Driver", "jdbc:postgresql", false, true),
+    MYSQL(3, "com.mysql.cj.jdbc.Driver", "jdbc:mysql", false, false),
+    UNKNOWN(-99, null, "", false, false);
 
     private final int index;
     private final String driverClass;
     private final String driverPrefix;
     private final boolean uppercase;
+    private final boolean supportSchema;
 
-    DBType(int index, String driverClass, String driverPrefix, boolean uppercase) {
+    DBType(int index, String driverClass, String driverPrefix, boolean uppercase, boolean supportSchema) {
         this.index = index;
         this.driverClass = driverClass;
         this.driverPrefix = driverPrefix;
         this.uppercase = uppercase;
+        this.supportSchema = supportSchema;
     }
 
     private static final Map<String, DBType> map = new HashMap<>();

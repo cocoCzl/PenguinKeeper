@@ -1,7 +1,6 @@
 package com.dollar.penguin.meta.service.impl;
 
 import com.alibaba.excel.EasyExcel;
-import com.dollar.penguin.common.DBType;
 import com.dollar.penguin.common.DataException;
 import com.dollar.penguin.common.ExcelService;
 import com.dollar.penguin.meta.mapper.MetaMapper;
@@ -13,6 +12,7 @@ import com.dollar.penguin.meta.service.DataBaseMetaService;
 import com.dollar.penguin.util.TEAUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.penguin.database.util.DBType;
 import jakarta.annotation.Resource;
 import jakarta.servlet.ServletOutputStream;
 import jakarta.servlet.http.HttpServletResponse;
