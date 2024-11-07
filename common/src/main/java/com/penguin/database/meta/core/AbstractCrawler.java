@@ -13,9 +13,9 @@ public abstract class AbstractCrawler implements DataBaseCrawler {
 
     protected boolean isSystemSchemas(String schema, DBType dbType) {
         if (dbType.isUppercase()) {
-            return !systemSchemaList.contains(schema.toUpperCase());
+            return systemSchemaList.contains(schema.toUpperCase());
         } else {
-            return !systemSchemaList.contains(schema.toLowerCase());
+            return systemSchemaList.contains(schema.toLowerCase());
         }
     }
 

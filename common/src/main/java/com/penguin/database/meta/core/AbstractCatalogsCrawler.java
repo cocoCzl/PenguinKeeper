@@ -18,7 +18,7 @@ public abstract class AbstractCatalogsCrawler extends AbstractCrawler implements
         ArrayList<String> list = new ArrayList<>(20);
         while (resultSet.next()) {
             String schema = resultSet.getString(1);
-            if (isSystemSchemas(schema, dbType)) {
+            if (!isSystemSchemas(schema, dbType)) {
                 list.add(schema);
             }
         }
