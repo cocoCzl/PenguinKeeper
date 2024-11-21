@@ -8,6 +8,8 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 
 public abstract class AbstractCatalogsCrawler extends AbstractCrawler implements DataBaseCrawler {
 
@@ -24,5 +26,14 @@ public abstract class AbstractCatalogsCrawler extends AbstractCrawler implements
             list.add(schema);
         }
         return list;
+    }
+
+    protected LimitOptionsBuilder getLimitOptionsBuilder(String schema, String tableName) {
+        String fullName = schema + "." + tableName;
+        return LimitOptionsBuilder.builder().tableNamePattern(tableName)
+                .includeTables(tableFullName -> {
+                    tableFullName = tableFullName.replace("\"", "");
+                    return StringUtils.equalsIgnoreCase(tableFullName, fullName);
+                });
     }
 }

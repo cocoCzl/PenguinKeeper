@@ -4,7 +4,6 @@ import com.penguin.database.meta.DataBaseCrawler;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
-import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import schemacrawler.inclusionrule.RegularExpressionInclusionRule;
 import schemacrawler.schema.Catalog;
@@ -19,7 +18,6 @@ import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
 import schemacrawler.tools.utility.SchemaCrawlerUtility;
 import us.fatehi.utility.datasource.DatabaseConnectionSource;
 
-@Slf4j
 public class PostGreSqlCrawler extends AbstractSchemaCrawler implements DataBaseCrawler {
 
     public PostGreSqlCrawler() {
@@ -39,9 +37,6 @@ public class PostGreSqlCrawler extends AbstractSchemaCrawler implements DataBase
     @Override
     public Set<String> getTables(String schemaName, String regex, String connectionUrl, String user,
             String password) {
-        if (log.isInfoEnabled()) {
-            log.debug("schemaName:{}, regex:{}, connectionUrl:{}", schemaName, regex, connectionUrl);
-        }
         final DatabaseConnectionSource dataSource = getDataSource(connectionUrl, user, password);
         Set<String> allTables = new HashSet<>(1000);
         String scheme = schemaName.toLowerCase();
@@ -65,9 +60,6 @@ public class PostGreSqlCrawler extends AbstractSchemaCrawler implements DataBase
                 name = schema.getCatalogName();
             }
             if (name.equalsIgnoreCase(schemaName)) {
-                if (log.isDebugEnabled()) {
-                    log.debug("name:{}, schemaName:{}", name, schemaName);
-                }
                 dbSchema = schema;
                 break;
             }
@@ -80,10 +72,6 @@ public class PostGreSqlCrawler extends AbstractSchemaCrawler implements DataBase
                     continue;
                 }
                 allTables.add(table.getName());
-            }
-        } else {
-            if (log.isInfoEnabled()) {
-                log.info("dbSchema is null, allTables:{}", allTables);
             }
         }
         return allTables;

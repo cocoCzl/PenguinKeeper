@@ -8,6 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import org.apache.commons.lang3.StringUtils;
+import schemacrawler.inclusionrule.RegularExpressionInclusionRule;
+import schemacrawler.schemacrawler.LimitOptionsBuilder;
 
 public abstract class AbstractSchemaCrawler extends AbstractCrawler implements DataBaseCrawler {
 
@@ -24,5 +27,15 @@ public abstract class AbstractSchemaCrawler extends AbstractCrawler implements D
             list.add(schema);
         }
         return list;
+    }
+
+    protected LimitOptionsBuilder getLimitOptionsBuilder(String schema, String tableName) {
+        String fullName = schema + "." + tableName;
+        return LimitOptionsBuilder.builder()
+                .includeSchemas(new RegularExpressionInclusionRule(schema))
+                .tableNamePattern(tableName).includeTables(tableFullName -> {
+                    tableFullName = tableFullName.replace("\"", "");
+                    return StringUtils.equalsIgnoreCase(tableFullName, fullName);
+                });
     }
 }
