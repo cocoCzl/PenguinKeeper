@@ -1,4 +1,4 @@
-package com.dollar.penguin.meta.model;
+package com.dollar.penguin.meta.model.pojo;
 
 import com.alibaba.excel.annotation.ExcelProperty;
 import lombok.Data;

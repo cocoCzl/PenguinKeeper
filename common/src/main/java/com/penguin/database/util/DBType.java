@@ -8,8 +8,8 @@ import lombok.Getter;
 @Getter
 public enum DBType {
     ORACLE(0, "oracle.jdbc.OracleDriver", "jdbc:oracle", true, true),
-    POSTGRESQL(2, "org.postgresql.Driver", "jdbc:postgresql", false, true),
-    MYSQL(3, "com.mysql.cj.jdbc.Driver", "jdbc:mysql", false, false),
+    POSTGRESQL(1, "org.postgresql.Driver", "jdbc:postgresql", false, true),
+    MYSQL(2, "com.mysql.cj.jdbc.Driver", "jdbc:mysql", false, false),
     UNKNOWN(-99, null, "", false, false);
 
     private final int index;

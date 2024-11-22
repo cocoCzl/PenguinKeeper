@@ -3,7 +3,7 @@
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.dollar.penguin.meta.mapper.MetaMapper">
 
-  <select id="queryDataBase" resultType="com.dollar.penguin.meta.model.DataBaseEntity">
+  <select id="queryDataBase" resultType="com.dollar.penguin.meta.model.entity.DataBaseEntity">
     select id, dataBaseCode, dataBaseName, url, pwd, username, created_at as createAt, updated_at as updatedAt
     from database_information
     <where>
@@ -17,7 +17,7 @@
     order by updated_at desc
   </select>
 
-  <insert id="insertDataBase" parameterType="com.dollar.penguin.meta.model.DataBaseEntity">
+  <insert id="insertDataBase" parameterType="com.dollar.penguin.meta.model.entity.DataBaseEntity">
     insert into database_information(dataBaseCode, dataBaseName, url, pwd, username)
     values (#{dataBaseCode},#{dataBaseName},#{url},#{pwd},#{userName})
   </insert>
@@ -30,12 +30,20 @@
     </foreach>
   </insert>
 
-  <select id="queryDataBaseById" resultType="com.dollar.penguin.meta.model.DataBaseEntity" parameterType="java.lang.Integer">
+  <select id="queryDataBaseById" resultType="com.dollar.penguin.meta.model.entity.DataBaseEntity" parameterType="java.lang.Integer">
     select id, dataBaseCode, dataBaseName, url, pwd, username, created_at as createAt, updated_at as updatedAt
     from database_information
     <where>
       id = #{id}
     </where>
   </select>
+
+  <insert id="batchInsertTable" parameterType="java.util.List">
+    insert into table_information (dataBaseCode, schema_name, table_name)
+    values
+    <foreach collection="list" item="entity" separator=",">
+      (#{entity.dataBaseCode}, #{entity.schemaName}, #{entity.tableName})
+    </foreach>
+  </insert>
 
 </mapper>

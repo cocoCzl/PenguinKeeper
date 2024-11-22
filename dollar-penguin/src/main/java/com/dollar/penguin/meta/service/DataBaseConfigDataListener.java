@@ -3,7 +3,7 @@ package com.dollar.penguin.meta.service;
 import com.alibaba.excel.context.AnalysisContext;
 import com.alibaba.excel.read.listener.ReadListener;
 import com.alibaba.excel.util.ListUtils;
-import com.dollar.penguin.meta.model.DataBaseConfigTemplatePojo;
+import com.dollar.penguin.meta.model.pojo.DataBaseConfigTemplatePojo;
 import java.util.List;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;

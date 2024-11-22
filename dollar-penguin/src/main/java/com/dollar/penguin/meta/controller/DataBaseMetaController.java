@@ -1,7 +1,7 @@
 package com.dollar.penguin.meta.controller;
 
 import com.dollar.penguin.common.DataException;
-import com.dollar.penguin.meta.model.DataBaseEntity;
+import com.dollar.penguin.meta.model.entity.DataBaseEntity;
 import com.dollar.penguin.meta.model.vo.DataBaseVo;
 import com.dollar.penguin.meta.service.DataBaseMetaService;
 import com.dollar.penguin.util.Result;

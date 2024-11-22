@@ -30,3 +30,10 @@ pagehelper:
 logging:
   # logback.xml配置文件的位置
   config: classpath:logback-spring.xml
+
+system:
+  thread:
+    threadCorePoolSize: '${thread_core_poolSize:10}'
+    threadMaxPoolSize: '${thread_max_poolSize:20}'
+    queueCapacity: '${queue_capacity:50}'
+    keepAliveSeconds: '${keep_alive_seconds:200}'

@@ -1,6 +1,6 @@
 package com.dollar.penguin.meta.service;
 
-import com.dollar.penguin.meta.model.DataBaseEntity;
+import com.dollar.penguin.meta.model.entity.DataBaseEntity;
 import com.dollar.penguin.meta.model.vo.DataBaseVo;
 import com.github.pagehelper.PageInfo;
 import jakarta.servlet.http.HttpServletResponse;
