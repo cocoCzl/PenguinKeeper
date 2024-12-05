@@ -14,9 +14,6 @@ public class DataException extends RuntimeException{
     // 数据查询异常
     public final static int DATA_SELECT_FAILED = -2003;
 
-    // EXCEL异常
-    public final static int EXCEL_FAILED = -2004;
-
     public final static int CRAWLER_FAILED = -2005;
 
     private final int code;
