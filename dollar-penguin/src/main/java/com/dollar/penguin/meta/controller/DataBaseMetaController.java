@@ -90,12 +90,13 @@ public class DataBaseMetaController {
     }
 
     @RequestMapping(value = "/deleteDataBase", method = RequestMethod.GET)
-    public Result deleteDataBase(@RequestParam(value = "id", required = true) Integer id) {
+    public Result deleteDataBase(@RequestParam(value = "id", required = true) Integer id,
+                                 @RequestParam(value = "dataBaseId", required = true) Integer dataBaseId) {
         try {
             if (log.isInfoEnabled()) {
-                log.info("deleteDataBase, id:{}", id);
+                log.info("deleteDataBase, id:{},dataBaseId:{}", id, dataBaseId);
             }
-            boolean success = dataBaseMetaService.deleteDataBaseInformation(id);
+            boolean success = dataBaseMetaService.deleteDataBaseInformation(id, dataBaseId);
             return Result.success(success);
         } catch (Throwable e) {
             log.error("deleteDataBase error:{}", e.getMessage(), e);

@@ -15,7 +15,7 @@ CREATE TABLE database_information (
 DROP TABLE IF EXISTS table_information;
 CREATE TABLE table_information (
     id SERIAL PRIMARY KEY,               -- 自增主键
-    dataBaseCode int NOT NULL,           -- 数据库编码，不能为空
+    dataBaseId int NOT NULL,             -- 数据库信息ID，不能为空
     schema_name VARCHAR(128) NOT NULL,   -- schema/catalog
     table_name VARCHAR(128) NOT NULL,    -- 表名
     created_at TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,  -- 创建时间，默认为当前时间
@@ -25,7 +25,7 @@ CREATE TABLE table_information (
 ---列信息表
 CREATE TABLE column_information (
     id SERIAL PRIMARY KEY,               -- 自增主键
-    dataBaseCode int NOT NULL,           -- 数据库编码，不能为空
+    dataBaseId int NOT NULL,             -- 数据库信息ID，不能为空
     catalog_id int not null,             -- table表id
     table_name VARCHAR(128) NOT NULL,    -- 表名
     column_list VARCHAR(1024) NOT NULL,  -- 列名集合

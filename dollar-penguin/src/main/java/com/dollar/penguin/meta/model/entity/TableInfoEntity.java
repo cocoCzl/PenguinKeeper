@@ -7,7 +7,7 @@ import lombok.Data;
 public class TableInfoEntity {
 
     private int id;
-    private int dataBaseCode;
+    private int dataBaseId;
     private String schemaName;
     private String tableName;
     private Timestamp createAt;

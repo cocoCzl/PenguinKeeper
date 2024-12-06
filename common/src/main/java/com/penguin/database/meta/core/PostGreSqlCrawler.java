@@ -2,6 +2,7 @@ package com.penguin.database.meta.core;
 
 import com.penguin.database.meta.DataBaseCrawler;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
@@ -10,11 +11,7 @@ import schemacrawler.schema.Catalog;
 import schemacrawler.schema.Schema;
 import schemacrawler.schema.Table;
 import schemacrawler.schema.View;
-import schemacrawler.schemacrawler.LimitOptionsBuilder;
-import schemacrawler.schemacrawler.LoadOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaCrawlerOptions;
-import schemacrawler.schemacrawler.SchemaCrawlerOptionsBuilder;
-import schemacrawler.schemacrawler.SchemaInfoLevelBuilder;
+import schemacrawler.schemacrawler.*;
 import schemacrawler.tools.utility.SchemaCrawlerUtility;
 import us.fatehi.utility.datasource.DatabaseConnectionSource;
 
@@ -40,18 +37,22 @@ public class PostGreSqlCrawler extends AbstractSchemaCrawler implements DataBase
         final DatabaseConnectionSource dataSource = getDataSource(connectionUrl, user, password);
         Set<String> allTables = new HashSet<>(1000);
         String scheme = schemaName.toLowerCase();
+        // 配置限制选项,使用正则表达式包含指定的schema
         LimitOptionsBuilder limitOptionsBuilder = LimitOptionsBuilder.builder()
                 .includeSchemas(new RegularExpressionInclusionRule(scheme));
         if (StringUtils.isNotEmpty(regex)) {
             limitOptionsBuilder.tableNamePattern(regex);
         }
+        // 配置加载选项,设置最小的架构信息级别,这样在抓取时将减少获取的元数据细节,从而加快速度
         final LoadOptionsBuilder loadOptionsBuilder = LoadOptionsBuilder.builder()
                 // Set what details are required in the schema - this affects the
                 // time taken to crawl the schema
                 .withSchemaInfoLevel(SchemaInfoLevelBuilder.minimum());
+        // 将限制和加载选项组合起来，以便控制抓取过程
         final SchemaCrawlerOptions schemaCrawlerOptions = SchemaCrawlerOptionsBuilder.newSchemaCrawlerOptions()
                 .withLimitOptions(limitOptionsBuilder.toOptions())
                 .withLoadOptions(loadOptionsBuilder.toOptions());
+        // 获取Catalog
         Catalog catalog = SchemaCrawlerUtility.getCatalog(dataSource, schemaCrawlerOptions);
         Schema dbSchema = null;
         for (final Schema schema : catalog.getSchemas()) {
@@ -75,5 +76,23 @@ public class PostGreSqlCrawler extends AbstractSchemaCrawler implements DataBase
             }
         }
         return allTables;
+    }
+
+    @Override
+    public Table getTable(String schemaName, String tableName, String connectionUrl,
+                          String user, String password) {
+        LimitOptionsBuilder limitOptionsBuilder = getLimitOptionsBuilder(schemaName, tableName);
+        final DatabaseConnectionSource dataSource = getDataSource(connectionUrl, user, password);
+        // 将限制和加载选项组合起来，以便控制抓取过程
+        SchemaCrawlerOptions schemaCrawlerOptions = getSchemaCrawlerOptions(limitOptionsBuilder);
+        // 获取Catalog
+        Catalog catalog = SchemaCrawlerUtility.getCatalog(dataSource, schemaCrawlerOptions);
+        // 获取tables
+        Collection<Table> tables = catalog.getTables();
+        if (!tables.isEmpty()) {
+            return tables.iterator().next();
+        } else {
+            return null;
+        }
     }
 }

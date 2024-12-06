@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -67,10 +68,19 @@ public class DataBaseMetaServiceImpl implements DataBaseMetaService {
     }
 
     @Override
-    public boolean deleteDataBaseInformation(int id) {
-        int rsCount = metaMapper.deleteDataBase(id);
-        if (rsCount != 1) {
+    @Transactional
+    public boolean deleteDataBaseInformation(int id, int dataBaseId) {
+        // 删除数据库信息表
+        int dataBaseCount = metaMapper.deleteDataBase(id);
+        // 删除表信息表
+        int tableCount = metaMapper.deleteTableByDataBase(dataBaseId);
+        // 删除列信息表
+        int columnCount = metaMapper.deleteColumnByDataBase(dataBaseId);
+        if (dataBaseCount != 1) {
             throw new DataException(DataException.DATA_DELETE_FAILED, "DataBase delete exception!");
+        }
+        if (log.isInfoEnabled()) {
+            log.info("delete success, dataBaseCount:{},tableCount:{},columnCount:{}", dataBaseCount, tableCount, columnCount);
         }
         return true;
     }

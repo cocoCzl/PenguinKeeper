@@ -85,14 +85,18 @@ public class OracleCrawler extends AbstractSchemaCrawler implements DataBaseCraw
         return allTables;
     }
 
+    @Override
     public Table getTable(String schemaName, String tableName, String connectionUrl,
             String user, String password) {
         LimitOptionsBuilder limitOptionsBuilder = getLimitOptionsBuilder(schemaName, tableName);
+        // 将限制和加载选项组合起来，以便控制抓取过程
         SchemaCrawlerOptions schemaCrawlerOptions = getSchemaCrawlerOptions(limitOptionsBuilder);
         final SchemaRetrievalOptions schemaRetrievalOptions = SchemaRetrievalOptionsBuilder.newSchemaRetrievalOptions();
         final DatabaseConnectionSource dataSource = getDataSource(connectionUrl, user, password);
+        // 获取Catalog
         Catalog catalog = SchemaCrawlerUtility.getCatalog(dataSource, schemaRetrievalOptions,
                 schemaCrawlerOptions, new Config());
+        // 获取tables
         Collection<Table> tables = catalog.getTables();
         if (!tables.isEmpty()) {
             return tables.iterator().next();

@@ -17,6 +17,14 @@
     order by updated_at desc
   </select>
 
+  <select id="queryDataBaseById" resultType="com.dollar.penguin.meta.model.entity.DataBaseEntity" parameterType="java.lang.Integer">
+    select id, dataBaseCode, dataBaseName, url, pwd, username, created_at as createAt, updated_at as updatedAt
+    from database_information
+    <where>
+      id = #{id}
+    </where>
+  </select>
+
   <insert id="insertDataBase" parameterType="com.dollar.penguin.meta.model.entity.DataBaseEntity">
     insert into database_information(dataBaseCode, dataBaseName, url, pwd, username)
     values (#{dataBaseCode},#{dataBaseName},#{url},#{pwd},#{userName})
@@ -31,27 +39,19 @@
     delete from database_information where id = #{id}
   </insert>
 
-  <insert id="batchInsertDataBase" parameterType="java.util.List">
-    insert into database_information (dataBaseCode, dataBaseName, url, pwd, username)
-    values
-    <foreach collection="list" item="entity" separator=",">
-      (#{entity.dataBaseCode}, #{entity.dataBaseName}, #{entity.url}, #{entity.pwd}, #{entity.userName})
-    </foreach>
+  <insert id="deleteTableByDataBase">
+    delete from table_information where dataBaseId = #{dataBaseId}
   </insert>
 
-  <select id="queryDataBaseById" resultType="com.dollar.penguin.meta.model.entity.DataBaseEntity" parameterType="java.lang.Integer">
-    select id, dataBaseCode, dataBaseName, url, pwd, username, created_at as createAt, updated_at as updatedAt
-    from database_information
-    <where>
-      id = #{id}
-    </where>
-  </select>
+  <insert id="deleteColumnByDataBase">
+    delete from column_information where dataBaseId = #{dataBaseId}
+  </insert>
 
   <insert id="batchInsertTable" parameterType="java.util.List">
-    insert into table_information (dataBaseCode, schema_name, table_name)
+    insert into table_information (dataBaseId, schema_name, table_name)
     values
     <foreach collection="list" item="entity" separator=",">
-      (#{entity.dataBaseCode}, #{entity.schemaName}, #{entity.tableName})
+      (#{entity.dataBaseId}, #{entity.schemaName}, #{entity.tableName})
     </foreach>
   </insert>
 

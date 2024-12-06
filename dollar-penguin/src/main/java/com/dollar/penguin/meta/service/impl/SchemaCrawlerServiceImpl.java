@@ -39,7 +39,8 @@ public class SchemaCrawlerServiceImpl implements SchemaCrawlerService {
         try {
             Class.forName(dbType.getDriverClass());
             String pwd = TEAUtil.decode(dataBaseEntity.getPwd());
-            connection = DriverManager.getConnection(dataBaseEntity.getUrl(), dataBaseEntity.getUserName(), pwd);
+            connection = DriverManager.getConnection(dataBaseEntity.getUrl(),
+                    dataBaseEntity.getUserName(), pwd);
             // 解析数据获取所有Schema或者CateLog
             List<String> rsList = dataBaseCrawler.getAllSchemasOrCatalogs(connection, dbType);
             if (log.isDebugEnabled()) {
@@ -75,8 +76,11 @@ public class SchemaCrawlerServiceImpl implements SchemaCrawlerService {
                 dataBaseEntity.getUserName(), pwd);
         boolean success = false;
         if (!tables.isEmpty()) {
-            List<TableInfoEntity> tableInfoList = buildTableInfoList(dataBaseEntity.getDataBaseCode(),
-                    analysisDataBaseVo.getSchemaName(), tables);
+            String schemaName =
+                    dbType.isUppercase() ? analysisDataBaseVo.getSchemaName().toUpperCase()
+                            : analysisDataBaseVo.getSchemaName().toLowerCase();
+            List<TableInfoEntity> tableInfoList = buildTableInfoList(dataBaseEntity.getId(),
+                    schemaName, tables);
             if (log.isDebugEnabled()) {
                 log.debug("{},All Tables:{}", analysisDataBaseVo.getSchemaName(), tableInfoList);
             }
@@ -87,14 +91,14 @@ public class SchemaCrawlerServiceImpl implements SchemaCrawlerService {
         return CompletableFuture.completedFuture(success);
     }
 
-    private List<TableInfoEntity> buildTableInfoList(int dataBaseCode, String schemaName,
+    private List<TableInfoEntity> buildTableInfoList(int dataBaseId, String schemaName,
             Set<String> tables) {
         List<TableInfoEntity> tableInfoList = new ArrayList<>();
         tables.forEach(table -> {
             TableInfoEntity tableInfo = new TableInfoEntity();
             tableInfo.setTableName(table);
             tableInfo.setSchemaName(schemaName);
-            tableInfo.setDataBaseCode(dataBaseCode);
+            tableInfo.setDataBaseId(dataBaseId);
             tableInfoList.add(tableInfo);
         });
         return tableInfoList;

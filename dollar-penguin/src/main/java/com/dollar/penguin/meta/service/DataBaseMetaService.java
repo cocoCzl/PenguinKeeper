@@ -12,5 +12,5 @@ public interface DataBaseMetaService {
 
     boolean modifyDataBaseInformation(DataBaseVo dataBaseVo);
 
-    boolean deleteDataBaseInformation(int id);
+    boolean deleteDataBaseInformation(int id, int dataBaseId);
 }
