@@ -4,6 +4,7 @@ import lombok.Data;
 
 @Data
 public class DataBaseVo {
+    private int id;
     private String dataBaseName;
     private String url;
     private String pwd;

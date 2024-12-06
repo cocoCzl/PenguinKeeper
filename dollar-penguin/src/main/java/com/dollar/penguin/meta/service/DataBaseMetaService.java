@@ -9,4 +9,8 @@ public interface DataBaseMetaService {
     PageInfo<DataBaseEntity> queryDataBase(String code, String name, int iDisplayStart, int iDisplayLength);
 
     boolean insertDataBaseInformation(DataBaseVo dataBaseVo);
+
+    boolean modifyDataBaseInformation(DataBaseVo dataBaseVo);
+
+    boolean deleteDataBaseInformation(int id);
 }

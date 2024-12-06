@@ -13,6 +13,10 @@ public interface MetaMapper {
 
     int insertDataBase(DataBaseEntity dataBaseEntity);
 
+    int modifyDataBase(DataBaseEntity dataBaseEntity);
+
+    int deleteDataBase(int id);
+
     void batchInsertDataBase(List<DataBaseEntity> dataBaseEntityList);
 
     DataBaseEntity queryDataBaseById(int id);

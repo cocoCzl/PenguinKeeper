@@ -11,10 +11,16 @@ public class DataException extends RuntimeException{
     // 数据插入异常
     public final static int DATA_INSERT_FAILED = -2002;
 
+    // 数据更新异常
+    public final static int DATA_UPDATE_FAILED = -2004;
+
     // 数据查询异常
     public final static int DATA_SELECT_FAILED = -2003;
 
-    public final static int CRAWLER_FAILED = -2005;
+    // 数据删除异常
+    public final static int DATA_DELETE_FAILED = -2005;
+
+    public final static int CRAWLER_FAILED = -2006;
 
     private final int code;
 

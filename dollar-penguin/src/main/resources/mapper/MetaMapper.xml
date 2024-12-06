@@ -22,6 +22,15 @@
     values (#{dataBaseCode},#{dataBaseName},#{url},#{pwd},#{userName})
   </insert>
 
+  <insert id="modifyDataBase" parameterType="com.dollar.penguin.meta.model.entity.DataBaseEntity">
+    update database_information set dataBaseCode = #{dataBaseCode}, dataBaseName = #{dataBaseName}, url = #{url},
+    pwd = #{pwd}, userName = #{userName}, updated_at = #{updatedAt} where id = #{id}
+  </insert>
+
+  <insert id="deleteDataBase">
+    delete from database_information where id = #{id}
+  </insert>
+
   <insert id="batchInsertDataBase" parameterType="java.util.List">
     insert into database_information (dataBaseCode, dataBaseName, url, pwd, username)
     values

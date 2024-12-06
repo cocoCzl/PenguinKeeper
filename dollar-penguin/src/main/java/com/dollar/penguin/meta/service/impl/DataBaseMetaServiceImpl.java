@@ -9,6 +9,7 @@ import com.dollar.penguin.util.TEAUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.penguin.database.util.DBType;
+import java.sql.Timestamp;
 import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -46,6 +47,30 @@ public class DataBaseMetaServiceImpl implements DataBaseMetaService {
         int rsCount = metaMapper.insertDataBase(dataBaseEntity);
         if (rsCount != 1) {
             throw new DataException(DataException.DATA_INSERT_FAILED, "DataBase insert exception!");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean modifyDataBaseInformation(DataBaseVo dataBaseVo) {
+        // 数据验证
+        checkData(dataBaseVo);
+        // 插入数据
+        DataBaseEntity dataBaseEntity = buildDataBaseEntity(dataBaseVo);
+        dataBaseEntity.setId(dataBaseVo.getId());
+        dataBaseEntity.setUpdatedAt(new Timestamp(System.currentTimeMillis()));
+        int rsCount = metaMapper.modifyDataBase(dataBaseEntity);
+        if (rsCount != 1) {
+            throw new DataException(DataException.DATA_UPDATE_FAILED, "DataBase update exception!");
+        }
+        return true;
+    }
+
+    @Override
+    public boolean deleteDataBaseInformation(int id) {
+        int rsCount = metaMapper.deleteDataBase(id);
+        if (rsCount != 1) {
+            throw new DataException(DataException.DATA_DELETE_FAILED, "DataBase delete exception!");
         }
         return true;
     }
