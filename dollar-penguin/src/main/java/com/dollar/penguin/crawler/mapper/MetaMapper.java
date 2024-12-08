@@ -1,7 +1,6 @@
-package com.dollar.penguin.meta.mapper;
+package com.dollar.penguin.crawler.mapper;
 
-import com.dollar.penguin.meta.model.entity.DataBaseEntity;
-import com.dollar.penguin.meta.model.entity.TableInfoEntity;
+import com.dollar.penguin.crawler.model.entity.DataBaseEntity;
 import java.util.List;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -19,9 +18,4 @@ public interface MetaMapper {
 
     DataBaseEntity queryDataBaseById(int id);
 
-    void batchInsertTable(List<TableInfoEntity> tableInfoEntityList);
-
-    int deleteTableByDataBase(int dataBaseId);
-
-    int deleteColumnByDataBase(int dataBaseId);
 }

@@ -20,6 +20,7 @@ public class DataException extends RuntimeException{
     // 数据删除异常
     public final static int DATA_DELETE_FAILED = -2005;
 
+    // 获取元数据异常
     public final static int CRAWLER_FAILED = -2006;
 
     private final int code;

@@ -1,7 +1,7 @@
-package com.dollar.penguin.meta.service;
+package com.dollar.penguin.crawler.service;
 
-import com.dollar.penguin.meta.model.entity.DataBaseEntity;
-import com.dollar.penguin.meta.model.vo.DataBaseVo;
+import com.dollar.penguin.crawler.model.entity.DataBaseEntity;
+import com.dollar.penguin.crawler.model.vo.DataBaseVo;
 import com.github.pagehelper.PageInfo;
 
 public interface DataBaseMetaService {
@@ -12,5 +12,5 @@ public interface DataBaseMetaService {
 
     boolean modifyDataBaseInformation(DataBaseVo dataBaseVo);
 
-    boolean deleteDataBaseInformation(int id, int dataBaseId);
+    boolean deleteDataBaseInformation(int id);
 }

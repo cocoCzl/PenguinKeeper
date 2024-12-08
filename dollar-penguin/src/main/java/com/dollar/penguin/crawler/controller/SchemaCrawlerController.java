@@ -1,11 +1,11 @@
-package com.dollar.penguin.meta.controller;
+package com.dollar.penguin.crawler.controller;
 
 import com.dollar.penguin.common.DataException;
-import com.dollar.penguin.meta.model.vo.AnalysisDataBaseVo;
-import com.dollar.penguin.meta.service.SchemaCrawlerService;
+import com.dollar.penguin.crawler.model.vo.AnalysisDataBaseVo;
+import com.dollar.penguin.crawler.service.SchemaCrawlerService;
 import com.dollar.penguin.util.Result;
 import java.util.List;
-import java.util.concurrent.CompletableFuture;
+import java.util.Set;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
@@ -40,30 +40,23 @@ public class SchemaCrawlerController {
         }
     }
 
-    @RequestMapping(value = "/loadTables", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @RequestMapping(value = "/getTables", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Result loadTables(@RequestBody AnalysisDataBaseVo analysisDataBaseVo) {
+    public Result getTables(@RequestBody AnalysisDataBaseVo analysisDataBaseVo) {
         try {
             if (log.isInfoEnabled()) {
                 log.info("loadTables, analysisDataBaseVo:{}", analysisDataBaseVo);
             }
             // 调用异步方法
-            CompletableFuture<Boolean> rs = schemaCrawlerService.insertTables(analysisDataBaseVo);
-            rs.thenAccept(success -> {
-                if (success) {
-                    log.info("Tables loaded successfully");
-                } else {
-                    log.error("Tables loading failed");
-                }
-            });
-            return Result.success();
+            Set<String> tables = schemaCrawlerService.getTables(analysisDataBaseVo);
+            return Result.success(tables);
         } catch (Exception e) {
             log.error("loadTables error:{}", e.getMessage(), e);
             if (e instanceof DataException dataBaseMetaException) {
                 return Result.failure(dataBaseMetaException.getCode(),
                         dataBaseMetaException.getMessage());
             }
-            return Result.failure("[加载所有表异常]");
+            return Result.failure("[获取表异常]");
         }
     }
 }

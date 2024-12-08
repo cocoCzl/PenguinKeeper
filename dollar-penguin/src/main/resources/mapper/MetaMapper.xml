@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.dollar.penguin.meta.mapper.MetaMapper">
+<mapper namespace="com.dollar.penguin.crawler.mapper.MetaMapper">
 
-  <select id="queryDataBase" resultType="com.dollar.penguin.meta.model.entity.DataBaseEntity">
+  <select id="queryDataBase" resultType="com.dollar.penguin.crawler.model.entity.DataBaseEntity">
     select id, dataBaseCode, dataBaseName, url, pwd, username, created_at as createAt, updated_at as updatedAt
     from database_information
     <where>
@@ -17,7 +17,7 @@
     order by updated_at desc
   </select>
 
-  <select id="queryDataBaseById" resultType="com.dollar.penguin.meta.model.entity.DataBaseEntity" parameterType="java.lang.Integer">
+  <select id="queryDataBaseById" resultType="com.dollar.penguin.crawler.model.entity.DataBaseEntity" parameterType="java.lang.Integer">
     select id, dataBaseCode, dataBaseName, url, pwd, username, created_at as createAt, updated_at as updatedAt
     from database_information
     <where>
@@ -25,34 +25,18 @@
     </where>
   </select>
 
-  <insert id="insertDataBase" parameterType="com.dollar.penguin.meta.model.entity.DataBaseEntity">
+  <insert id="insertDataBase" parameterType="com.dollar.penguin.crawler.model.entity.DataBaseEntity">
     insert into database_information(dataBaseCode, dataBaseName, url, pwd, username)
     values (#{dataBaseCode},#{dataBaseName},#{url},#{pwd},#{userName})
   </insert>
 
-  <insert id="modifyDataBase" parameterType="com.dollar.penguin.meta.model.entity.DataBaseEntity">
+  <insert id="modifyDataBase" parameterType="com.dollar.penguin.crawler.model.entity.DataBaseEntity">
     update database_information set dataBaseCode = #{dataBaseCode}, dataBaseName = #{dataBaseName}, url = #{url},
     pwd = #{pwd}, userName = #{userName}, updated_at = #{updatedAt} where id = #{id}
   </insert>
 
   <insert id="deleteDataBase">
     delete from database_information where id = #{id}
-  </insert>
-
-  <insert id="deleteTableByDataBase">
-    delete from table_information where dataBaseId = #{dataBaseId}
-  </insert>
-
-  <insert id="deleteColumnByDataBase">
-    delete from column_information where dataBaseId = #{dataBaseId}
-  </insert>
-
-  <insert id="batchInsertTable" parameterType="java.util.List">
-    insert into table_information (dataBaseId, schema_name, table_name)
-    values
-    <foreach collection="list" item="entity" separator=",">
-      (#{entity.dataBaseId}, #{entity.schemaName}, #{entity.tableName})
-    </foreach>
   </insert>
 
 </mapper>

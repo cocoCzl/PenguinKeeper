@@ -1,4 +1,4 @@
-package com.dollar.penguin.meta.model.entity;
+package com.dollar.penguin.crawler.model.entity;
 
 import java.sql.Timestamp;
 import lombok.Data;

@@ -1,9 +1,9 @@
-package com.dollar.penguin.meta.controller;
+package com.dollar.penguin.crawler.controller;
 
 import com.dollar.penguin.common.DataException;
-import com.dollar.penguin.meta.model.entity.DataBaseEntity;
-import com.dollar.penguin.meta.model.vo.DataBaseVo;
-import com.dollar.penguin.meta.service.DataBaseMetaService;
+import com.dollar.penguin.crawler.model.entity.DataBaseEntity;
+import com.dollar.penguin.crawler.model.vo.DataBaseVo;
+import com.dollar.penguin.crawler.service.DataBaseMetaService;
 import com.dollar.penguin.util.Result;
 import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
@@ -90,13 +90,12 @@ public class DataBaseMetaController {
     }
 
     @RequestMapping(value = "/deleteDataBase", method = RequestMethod.GET)
-    public Result deleteDataBase(@RequestParam(value = "id", required = true) Integer id,
-                                 @RequestParam(value = "dataBaseId", required = true) Integer dataBaseId) {
+    public Result deleteDataBase(@RequestParam(value = "id", required = true) Integer id) {
         try {
             if (log.isInfoEnabled()) {
-                log.info("deleteDataBase, id:{},dataBaseId:{}", id, dataBaseId);
+                log.info("deleteDataBase, id:{}", id);
             }
-            boolean success = dataBaseMetaService.deleteDataBaseInformation(id, dataBaseId);
+            boolean success = dataBaseMetaService.deleteDataBaseInformation(id);
             return Result.success(success);
         } catch (Throwable e) {
             log.error("deleteDataBase error:{}", e.getMessage(), e);

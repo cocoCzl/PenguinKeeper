@@ -1,10 +1,10 @@
-package com.dollar.penguin.meta.service.impl;
+package com.dollar.penguin.crawler.service.impl;
 
 import com.dollar.penguin.common.DataException;
-import com.dollar.penguin.meta.mapper.MetaMapper;
-import com.dollar.penguin.meta.model.entity.DataBaseEntity;
-import com.dollar.penguin.meta.model.vo.DataBaseVo;
-import com.dollar.penguin.meta.service.DataBaseMetaService;
+import com.dollar.penguin.crawler.mapper.MetaMapper;
+import com.dollar.penguin.crawler.model.entity.DataBaseEntity;
+import com.dollar.penguin.crawler.model.vo.DataBaseVo;
+import com.dollar.penguin.crawler.service.DataBaseMetaService;
 import com.dollar.penguin.util.TEAUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -15,7 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -68,19 +67,14 @@ public class DataBaseMetaServiceImpl implements DataBaseMetaService {
     }
 
     @Override
-    @Transactional
-    public boolean deleteDataBaseInformation(int id, int dataBaseId) {
+    public boolean deleteDataBaseInformation(int id) {
         // 删除数据库信息表
-        int dataBaseCount = metaMapper.deleteDataBase(id);
-        // 删除表信息表
-        int tableCount = metaMapper.deleteTableByDataBase(dataBaseId);
-        // 删除列信息表
-        int columnCount = metaMapper.deleteColumnByDataBase(dataBaseId);
-        if (dataBaseCount != 1) {
+        int count = metaMapper.deleteDataBase(id);
+        if (count != 1) {
             throw new DataException(DataException.DATA_DELETE_FAILED, "DataBase delete exception!");
         }
         if (log.isInfoEnabled()) {
-            log.info("delete success, dataBaseCount:{},tableCount:{},columnCount:{}", dataBaseCount, tableCount, columnCount);
+            log.info("delete success, count:{}", count);
         }
         return true;
     }

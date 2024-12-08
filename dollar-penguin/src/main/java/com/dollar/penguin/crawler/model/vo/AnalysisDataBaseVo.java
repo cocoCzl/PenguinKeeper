@@ -1,4 +1,4 @@
-package com.dollar.penguin.meta.model.vo;
+package com.dollar.penguin.crawler.model.vo;
 
 import lombok.Data;
 
