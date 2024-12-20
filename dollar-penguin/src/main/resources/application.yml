@@ -1,6 +1,8 @@
 server:
   # 端口号
   port: ${DP_SERVER_PORT:8888}
+  servlet:
+    context-path: /dollarPenguin
 
 # DataSource Config
 spring:
@@ -32,7 +34,7 @@ logging:
   config: classpath:logback-spring.xml
 
 system:
-  thread:
+  threadConfig:
     threadCorePoolSize: '${thread_core_poolSize:10}'
     threadMaxPoolSize: '${thread_max_poolSize:20}'
     queueCapacity: '${queue_capacity:50}'

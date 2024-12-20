@@ -1,34 +1,27 @@
 package com.dollar.penguin.config;
 
+import com.dollar.penguin.config.SystemConfig.ThreadConfig;
 import java.util.concurrent.Executor;
 import java.util.concurrent.ThreadPoolExecutor;
-import lombok.Data;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
-@Data
 @Configuration
-@ConfigurationProperties(prefix = "system.thread")
 public class DollarPenguinConfig {
 
-    private int threadCorePoolSize;
-    private int threadMaxPoolSize;
-    private int queueCapacity;
-    private int keepAliveSeconds;
-
     @Bean("async-executor")
-    public Executor asyncExecutor() {
+    public Executor asyncExecutor(SystemConfig systemConfig) {
+        ThreadConfig threadConfig = systemConfig.getThreadConfig();
         ThreadPoolTaskExecutor taskExecutor = new ThreadPoolTaskExecutor();
         // 核心线程数
-        taskExecutor.setCorePoolSize(threadCorePoolSize);
+        taskExecutor.setCorePoolSize(threadConfig.getThreadCorePoolSize());
         // 线程池维护线程的最大数量，只有在缓冲队列满了之后才会申请超过核心线程数的线程
-        taskExecutor.setMaxPoolSize(threadMaxPoolSize);
+        taskExecutor.setMaxPoolSize(threadConfig.getThreadMaxPoolSize());
         // 缓存队列
-        taskExecutor.setQueueCapacity(queueCapacity);
+        taskExecutor.setQueueCapacity(threadConfig.getQueueCapacity());
         // 空闲时间，当超过了核心线程数之外的线程在空闲时间到达之后会被销毁
-        taskExecutor.setKeepAliveSeconds(keepAliveSeconds);
+        taskExecutor.setKeepAliveSeconds(threadConfig.getKeepAliveSeconds());
         // 异步方法内部线程名称
         taskExecutor.setThreadNamePrefix("async-executor-");
         /*
