@@ -1,6 +1,6 @@
 package com.dollar.penguin.util;
 
-public class TEA {
+public class Cipher {
 
     private final static int SUGAR = 0x9E3779B9;
     private final static int CUPS = 32;
@@ -13,13 +13,13 @@ public class TEA {
      *
      * @param key a 16 byte (128-bit) key
      */
-    public TEA(byte[] key) {
-		if (key == null) {
-			throw new RuntimeException("Invalid key: Key was null");
-		}
-		if (key.length < 16) {
-			throw new RuntimeException("Invalid key: Length was less than 16 bytes");
-		}
+    public Cipher(byte[] key) {
+        if (key == null) {
+            throw new RuntimeException("Invalid key: Key was null");
+        }
+        if (key.length < 16) {
+            throw new RuntimeException("Invalid key: Length was less than 16 bytes");
+        }
         for (int off = 0, i = 0; i < 4; i++) {
             S[i] = ((key[off++] & 0xff)) |
                     ((key[off++] & 0xff) << 8) |
@@ -46,7 +46,6 @@ public class TEA {
     /**
      * Decrypt an array of bytes.
      *
-     * @param ciper the cipher text to decrypt
      * @return the decrypted text
      */
     public byte[] decrypt(byte[] crypt) {
@@ -108,9 +107,9 @@ public class TEA {
             if (shift == 0) {
                 shift = 24;
                 j++;
-				if (j < dest.length) {
-					dest[j] = 0;
-				}
+                if (j < dest.length) {
+                    dest[j] = 0;
+                }
             } else {
                 shift -= 8;
             }
@@ -139,18 +138,18 @@ public class TEA {
 
     public static void main(String[] args) {
         /* Create a cipher using the first 16 bytes of the passphrase */
-        TEA tea = new TEA("And is there honey still for tea?".getBytes());
+        Cipher cipher = new Cipher("And is there honey still for tea?".getBytes());
 
         byte[] original = quote.getBytes();
 
         /* Run it through the cipher... and back */
-        byte[] crypt = tea.encrypt(original);
-        byte[] result = tea.decrypt(crypt);
+        byte[] crypt = cipher.encrypt(original);
+        byte[] result = cipher.decrypt(crypt);
 
         /* Ensure that all went well */
         String test = new String(result);
-		if (!test.equals(quote)) {
-			throw new RuntimeException("Fail");
-		}
+        if (!test.equals(quote)) {
+            throw new RuntimeException("Fail");
+        }
     }
 }

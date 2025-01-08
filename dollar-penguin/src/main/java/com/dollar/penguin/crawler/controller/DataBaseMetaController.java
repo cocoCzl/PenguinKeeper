@@ -1,6 +1,5 @@
 package com.dollar.penguin.crawler.controller;
 
-import com.dollar.penguin.common.DataException;
 import com.dollar.penguin.crawler.model.entity.DataBaseEntity;
 import com.dollar.penguin.crawler.model.vo.DataBaseVo;
 import com.dollar.penguin.crawler.service.DataBaseMetaService;
@@ -25,85 +24,56 @@ public class DataBaseMetaController {
     private DataBaseMetaService dataBaseMetaService;
 
     @RequestMapping(value = "/queryDataBase", method = RequestMethod.GET)
-    public Result queryDataBase(@RequestParam(value = "code", required = false) String code,
+    public Result<PageInfo<DataBaseEntity>> queryDataBase(@RequestParam(value = "code", required = false) String code,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "iDisplayStart", required = true) Integer iDisplayStart,
             @RequestParam(value = "iDisplayLength", required = true) Integer iDisplayLength) {
-        try {
-            PageInfo<DataBaseEntity> dataList = dataBaseMetaService.queryDataBase(code, name,
-                    iDisplayStart, iDisplayLength);
-            return Result.success(dataList);
-        } catch (Throwable e) {
-            log.error("queryDataBase error:{}", e.getMessage(), e);
-            if (e instanceof DataException dataBaseMetaException) {
-                return Result.failure(dataBaseMetaException.getCode(),
-                        dataBaseMetaException.getMessage());
-            }
-            return Result.failure("[查询数据库信息异常]");
+        if (log.isInfoEnabled()) {
+            log.info("queryDataBase, code:{},name:{}", code, name);
         }
+        PageInfo<DataBaseEntity> dataList = dataBaseMetaService.queryDataBase(code, name,
+                iDisplayStart, iDisplayLength);
+        return Result.success(dataList);
     }
 
     @RequestMapping(value = "/insertDataBase", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Result insertDataBase(@RequestBody DataBaseVo dataBaseVo) {
-        try {
-            if (log.isInfoEnabled()) {
-                log.info("insertDataBase, dataBaseVo:{}", dataBaseVo);
-            }
-            boolean success = dataBaseMetaService.insertDataBaseInformation(dataBaseVo);
-            if (success) {
-                return Result.success();
-            } else {
-                return Result.failure("[新增数据库信息失败]");
-            }
-        } catch (Exception e) {
-            log.error("insertDataBase error:{}", e.getMessage(), e);
-            if (e instanceof DataException dataBaseMetaException) {
-                return Result.failure(dataBaseMetaException.getCode(),
-                        dataBaseMetaException.getMessage());
-            }
-            return Result.failure("[新增数据库信息异常]");
+    public Result<String> insertDataBase(@RequestBody DataBaseVo dataBaseVo) {
+        if (log.isInfoEnabled()) {
+            log.info("insertDataBase, dataBaseVo:{}", dataBaseVo);
+        }
+        boolean success = dataBaseMetaService.insertDataBaseInformation(dataBaseVo);
+        if (success) {
+            return Result.success("[新增数据库信息成功]");
+        } else {
+            return Result.failure("[新增数据库信息失败]");
         }
     }
 
     @RequestMapping(value = "/modifyDataBase", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Result modifyDataBase(@RequestBody DataBaseVo dataBaseVo) {
-        try {
-            if (log.isInfoEnabled()) {
-                log.info("modifyDataBase, dataBaseVo:{}", dataBaseVo);
-            }
-            boolean success = dataBaseMetaService.modifyDataBaseInformation(dataBaseVo);
-            if (success) {
-                return Result.success();
-            } else {
-                return Result.failure("[修改数据库信息失败]");
-            }
-        } catch (Exception e) {
-            log.error("modifyDataBase error:{}", e.getMessage(), e);
-            if (e instanceof DataException dataBaseMetaException) {
-                return Result.failure(dataBaseMetaException.getCode(),
-                        dataBaseMetaException.getMessage());
-            }
-            return Result.failure("[修改数据库信息异常]");
+    public Result<String> modifyDataBase(@RequestBody DataBaseVo dataBaseVo) {
+        if (log.isInfoEnabled()) {
+            log.info("modifyDataBase, dataBaseVo:{}", dataBaseVo);
+        }
+        boolean success = dataBaseMetaService.modifyDataBaseInformation(dataBaseVo);
+        if (success) {
+            return Result.success("[修改数据库信息成功]");
+        } else {
+            return Result.failure("[修改数据库信息失败]");
         }
     }
 
     @RequestMapping(value = "/deleteDataBase", method = RequestMethod.GET)
-    public Result deleteDataBase(@RequestParam(value = "id", required = true) Integer id) {
-        try {
-            if (log.isInfoEnabled()) {
-                log.info("deleteDataBase, id:{}", id);
-            }
-            boolean success = dataBaseMetaService.deleteDataBaseInformation(id);
-            return Result.success(success);
-        } catch (Throwable e) {
-            log.error("deleteDataBase error:{}", e.getMessage(), e);
-            if (e instanceof DataException dataBaseMetaException) {
-                return Result.failure(dataBaseMetaException.getCode(),
-                        dataBaseMetaException.getMessage());
-            }
-            return Result.failure("[删除数据库信息异常]");
+    public Result<String> deleteDataBase(@RequestParam(value = "id", required = true) Integer id) {
+        if (log.isInfoEnabled()) {
+            log.info("deleteDataBase, id:{}", id);
+        }
+        boolean success = dataBaseMetaService.deleteDataBaseInformation(id);
+        if (success) {
+            return Result.success("[删除数据库信息成功]");
+        } else {
+            return Result.failure("[删除数据库信息失败]");
         }
     }
 }

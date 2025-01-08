@@ -32,8 +32,8 @@ public class Result<T> {
         this.message = message;
     }
 
-    public static Result success() {
-        return new Result(ResultCode.SUCCESS);
+    public static Result<String> success() {
+        return new Result<>(ResultCode.SUCCESS);
     }
 
     public boolean isSuccess() {
@@ -41,26 +41,18 @@ public class Result<T> {
     }
 
     public static <K> Result<K> success(K data) {
-        return new Result(ResultCode.SUCCESS, data);
-    }
-
-    public static Result failure(ResultCode resultCode) {
-        return new Result(resultCode);
+        return new Result<>(ResultCode.SUCCESS, data);
     }
 
     public static <K> Result<K> failure(ResultCode resultCode, K data) {
-        return new Result(resultCode, data);
+        return new Result<>(resultCode, data);
     }
 
-    public static Result failure(int resultCode) {
-        return new Result(resultCode);
+    public static Result<String> failure(String message) {
+        return new Result<>(ResultCode.FAILURE, message);
     }
 
-    public static Result failure(String message) {
-        return new Result(ResultCode.FAILURE, message);
-    }
-
-    public static Result failure(int resultCode, String message) {
-        return new Result(resultCode, message);
+    public static Result<String> failure(int resultCode, String message) {
+        return new Result<>(resultCode, message);
     }
 }

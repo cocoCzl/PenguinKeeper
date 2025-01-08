@@ -5,7 +5,7 @@ import com.dollar.penguin.crawler.mapper.MetaMapper;
 import com.dollar.penguin.crawler.model.entity.DataBaseEntity;
 import com.dollar.penguin.crawler.model.vo.DataBaseVo;
 import com.dollar.penguin.crawler.service.DataBaseMetaService;
-import com.dollar.penguin.util.TEAUtil;
+import com.dollar.penguin.util.CipherUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.penguin.database.util.DBType;
@@ -89,6 +89,11 @@ public class DataBaseMetaServiceImpl implements DataBaseMetaService {
         if (StringUtils.isEmpty(dataBaseVo.getUserName())) {
             throw new DataException(DataException.DATA_BASE_PARAMETER_FAILED, "UserName Is Null!");
         }
+
+        DataBaseEntity dataBaseEntity = metaMapper.queryDataBaseByName(dataBaseVo.getDataBaseName());
+        if (dataBaseEntity != null) {
+            throw new DataException(DataException.DATA_INSERT_FAILED, "DataBaseByName already exists!");
+        }
     }
 
     private DataBaseEntity buildDataBaseEntity(DataBaseVo dataBaseVo) {
@@ -104,7 +109,7 @@ public class DataBaseMetaServiceImpl implements DataBaseMetaService {
         dataBaseEntity.setDataBaseName(dbType.name());
         dataBaseEntity.setUrl(dataBaseVo.getUrl());
         // 密码加密
-        String pwd = TEAUtil.encode(dataBaseVo.getPwd());
+        String pwd = CipherUtil.encode(dataBaseVo.getPwd());
         dataBaseEntity.setPwd(pwd);
         dataBaseEntity.setUserName(dataBaseVo.getUserName());
         return dataBaseEntity;

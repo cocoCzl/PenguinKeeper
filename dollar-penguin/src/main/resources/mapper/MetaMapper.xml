@@ -17,14 +17,6 @@
     order by updated_at desc
   </select>
 
-  <select id="queryDataBaseById" resultType="com.dollar.penguin.crawler.model.entity.DataBaseEntity" parameterType="java.lang.Integer">
-    select id, dataBaseCode, dataBaseName, url, pwd, username, created_at as createAt, updated_at as updatedAt
-    from database_information
-    <where>
-      id = #{id}
-    </where>
-  </select>
-
   <insert id="insertDataBase" parameterType="com.dollar.penguin.crawler.model.entity.DataBaseEntity">
     insert into database_information(dataBaseCode, dataBaseName, url, pwd, username)
     values (#{dataBaseCode},#{dataBaseName},#{url},#{pwd},#{userName})

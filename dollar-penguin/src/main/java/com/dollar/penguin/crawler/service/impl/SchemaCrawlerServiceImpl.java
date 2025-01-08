@@ -5,7 +5,7 @@ import com.dollar.penguin.crawler.mapper.MetaMapper;
 import com.dollar.penguin.crawler.model.entity.DataBaseEntity;
 import com.dollar.penguin.crawler.model.vo.AnalysisDataBaseVo;
 import com.dollar.penguin.crawler.service.SchemaCrawlerService;
-import com.dollar.penguin.util.TEAUtil;
+import com.dollar.penguin.util.CipherUtil;
 import com.penguin.database.meta.DataBaseCrawler;
 import com.penguin.database.meta.DataBaseCrawlerFactory;
 import com.penguin.database.util.DBType;
@@ -27,13 +27,13 @@ public class SchemaCrawlerServiceImpl implements SchemaCrawlerService {
 
     @Override
     public List<String> getAllSchemasOrCateLogs(int databaseId) throws SQLException {
-        DataBaseEntity dataBaseEntity = metaMapper.queryDataBaseById(databaseId);
-        DBType dbType = DBType.getDBType(dataBaseEntity.getUrl());
-        DataBaseCrawler dataBaseCrawler = DataBaseCrawlerFactory.createDataBaseCrawler(dbType);
         Connection connection = null;
         try {
+            DataBaseEntity dataBaseEntity = metaMapper.queryDataBaseById(databaseId);
+            DBType dbType = DBType.getDBType(dataBaseEntity.getUrl());
+            DataBaseCrawler dataBaseCrawler = DataBaseCrawlerFactory.createDataBaseCrawler(dbType);
             Class.forName(dbType.getDriverClass());
-            String pwd = TEAUtil.decode(dataBaseEntity.getPwd());
+            String pwd = CipherUtil.decode(dataBaseEntity.getPwd());
             connection = DriverManager.getConnection(dataBaseEntity.getUrl(),
                     dataBaseEntity.getUserName(), pwd);
             // 解析数据获取所有Schema或者CateLog
@@ -57,15 +57,18 @@ public class SchemaCrawlerServiceImpl implements SchemaCrawlerService {
 
     @Override
     public Set<String> getTables(AnalysisDataBaseVo analysisDataBaseVo) {
-        DataBaseEntity dataBaseEntity = metaMapper.queryDataBaseById(analysisDataBaseVo.getDatabaseId());
+        DataBaseEntity dataBaseEntity = metaMapper.queryDataBaseById(
+                analysisDataBaseVo.getDatabaseId());
         if (dataBaseEntity == null) {
             throw new DataException(DataException.CRAWLER_FAILED, "get tables error!");
         }
         DBType dbType = DBType.getDBType(dataBaseEntity.getUrl());
         // 解析获取tables
         DataBaseCrawler dataBaseCrawler = DataBaseCrawlerFactory.createDataBaseCrawler(dbType);
-        String pwd = TEAUtil.decode(dataBaseEntity.getPwd());
-        Set<String> tables = dataBaseCrawler.getTables(analysisDataBaseVo.getSchemaName(), analysisDataBaseVo.getRegex(), dataBaseEntity.getUrl(), dataBaseEntity.getUserName(), pwd);
+        String pwd = CipherUtil.decode(dataBaseEntity.getPwd());
+        Set<String> tables = dataBaseCrawler.getTables(analysisDataBaseVo.getSchemaName(),
+                analysisDataBaseVo.getRegex(), dataBaseEntity.getUrl(),
+                dataBaseEntity.getUserName(), pwd);
         if (log.isDebugEnabled()) {
             log.debug("get tables:{}", tables);
         }
