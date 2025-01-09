@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class JwtUtil {
 
-    private static final String KEY = "dollar-penguin";
+    public static final String KEY = "dollar-penguin";
 
     /**
      * 生成令牌

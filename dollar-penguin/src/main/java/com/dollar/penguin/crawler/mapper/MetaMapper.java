@@ -19,7 +19,8 @@ public interface MetaMapper {
 
     int modifyDataBase(DataBaseEntity dataBaseEntity);
 
-    int deleteDataBase(int id);
+    @Select("delete from database_information where id = #{id}")
+    int deleteDataBase(@Param("id") int id);
 
     @Select("select id, dataBaseCode, dataBaseName, url, pwd, username, created_at as createAt, "
             + "updated_at as updatedAt from database_information where id = #{id}")

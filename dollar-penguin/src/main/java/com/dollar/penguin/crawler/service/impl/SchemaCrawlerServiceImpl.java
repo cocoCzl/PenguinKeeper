@@ -1,6 +1,6 @@
 package com.dollar.penguin.crawler.service.impl;
 
-import com.dollar.penguin.common.DataException;
+import com.dollar.penguin.common.exception.DataException;
 import com.dollar.penguin.crawler.mapper.MetaMapper;
 import com.dollar.penguin.crawler.model.entity.DataBaseEntity;
 import com.dollar.penguin.crawler.model.vo.AnalysisDataBaseVo;

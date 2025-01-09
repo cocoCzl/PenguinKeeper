@@ -1,5 +1,6 @@
 package com.dollar.penguin.util;
 
+import com.dollar.penguin.common.enumUtil.ResultCodeEnum;
 import lombok.Data;
 
 @Data
@@ -12,14 +13,14 @@ public class Result<T> {
     public Result() {
     }
 
-    private Result(ResultCode resultCode) {
-        this.code = resultCode.code();
-        this.message = resultCode.message();
+    private Result(ResultCodeEnum resultCodeEnum) {
+        this.code = resultCodeEnum.code();
+        this.message = resultCodeEnum.message();
     }
 
-    private Result(ResultCode resultCode, T data) {
-        this.code = resultCode.code();
-        this.message = resultCode.message();
+    private Result(ResultCodeEnum resultCodeEnum, T data) {
+        this.code = resultCodeEnum.code();
+        this.message = resultCodeEnum.message();
         this.data = data;
     }
 
@@ -33,23 +34,23 @@ public class Result<T> {
     }
 
     public static Result<String> success() {
-        return new Result<>(ResultCode.SUCCESS);
+        return new Result<>(ResultCodeEnum.SUCCESS);
     }
 
     public boolean isSuccess() {
-        return ResultCode.SUCCESS.code().equals(code);
+        return ResultCodeEnum.SUCCESS.code().equals(code);
     }
 
     public static <K> Result<K> success(K data) {
-        return new Result<>(ResultCode.SUCCESS, data);
+        return new Result<>(ResultCodeEnum.SUCCESS, data);
     }
 
-    public static <K> Result<K> failure(ResultCode resultCode, K data) {
-        return new Result<>(resultCode, data);
+    public static <K> Result<K> failure(ResultCodeEnum resultCodeEnum, K data) {
+        return new Result<>(resultCodeEnum, data);
     }
 
     public static Result<String> failure(String message) {
-        return new Result<>(ResultCode.FAILURE, message);
+        return new Result<>(ResultCodeEnum.FAILURE, message);
     }
 
     public static Result<String> failure(int resultCode, String message) {

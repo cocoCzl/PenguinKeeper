@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.dollar.penguin.user.mapper.UserManageMapper">
+
+  <insert id="insertUser" parameterType="com.dollar.penguin.user.model.entity.UserInformationEntity">
+    insert into user_information(user_id, user_name, nick_name, pwd, email_address, created_at, updated_at)
+    values (#{userId},#{userName},#{nickName},#{pwd},#{emailAddress}, now(), now())
+  </insert>
+
+  <select id="findUserInformationByCriteria" resultType="com.dollar.penguin.user.model.entity.UserInformationEntity">
+    SELECT id,user_name,nick_name,pwd,email_address,created_at,updated_at FROM user_information
+    WHERE 1=1
+    <if test="nickName != null and nickName != ''">
+      AND nick_name = #{nickName}
+    </if>
+    <if test="userName != null and userName != ''">
+      AND user_name = #{userName}
+    </if>
+    <if test="userId != null and userId != ''">
+      AND user_id = #{userId}
+    </if>
+    <if test="emailAddress != null and emailAddress != ''">
+      AND email_address = #{emailAddress}
+    </if>
+  </select>
+
+  <select id="countUserInformationByCriteria" resultType="int">
+    SELECT COUNT(1)
+    FROM user_information
+    WHERE user_name = #{userName}
+    OR nick_name = #{nickName}
+    OR email_address = #{emailAddress}
+  </select>
+
+</mapper>

@@ -27,8 +27,4 @@
     pwd = #{pwd}, userName = #{userName}, updated_at = #{updatedAt} where id = #{id}
   </insert>
 
-  <insert id="deleteDataBase">
-    delete from database_information where id = #{id}
-  </insert>
-
 </mapper>

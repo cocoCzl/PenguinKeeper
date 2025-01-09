@@ -1,5 +1,6 @@
 package com.penguin.database.util;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicReference;
@@ -29,30 +30,19 @@ public enum DBType {
     private static final Map<String, DBType> map = new HashMap<>();
 
     static {
-        for (DBType dbType : DBType.values()) {
-            if (dbType != UNKNOWN) {
-                map.put(dbType.driverPrefix, dbType);
-            }
-        }
+        Arrays.stream(DBType.values()).filter(dbType -> dbType != UNKNOWN)
+                .forEach(dbType -> map.put(dbType.driverPrefix, dbType));
     }
 
     public static DBType recognizeDbType(String stack) {
-        for (DBType dbType : DBType.values()) {
-            if (stack.toUpperCase().contains(dbType.name())) {
-                return dbType;
-            }
-        }
-        return DBType.UNKNOWN;
+        return Arrays.stream(DBType.values())
+                .filter(dbType -> stack.toUpperCase().contains(dbType.name())).findFirst()
+                .orElse(UNKNOWN);
     }
 
     public static DBType parse(int index) {
-        DBType[] values = DBType.values();
-        for (DBType dbType : values) {
-            if (dbType.getIndex() == index) {
-                return dbType;
-            }
-        }
-        return UNKNOWN;
+        return Arrays.stream(DBType.values()).filter(dbType -> dbType.getIndex() == index)
+                .findFirst().orElse(UNKNOWN);
     }
 
     public static DBType getDBType(String jdbcUrl) {

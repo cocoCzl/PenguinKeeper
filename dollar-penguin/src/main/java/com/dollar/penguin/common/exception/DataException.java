@@ -1,4 +1,4 @@
-package com.dollar.penguin.common;
+package com.dollar.penguin.common.exception;
 
 import lombok.Getter;
 

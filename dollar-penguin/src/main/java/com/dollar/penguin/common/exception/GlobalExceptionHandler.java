@@ -1,7 +1,7 @@
-package com.dollar.penguin.common;
+package com.dollar.penguin.common.exception;
 
 import com.dollar.penguin.util.Result;
-import com.dollar.penguin.util.ResultCode;
+import com.dollar.penguin.common.enumUtil.ResultCodeEnum;
 import java.sql.SQLException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -18,7 +18,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = NullPointerException.class)
     public Result<String> handleNullPointerException(NullPointerException e) {
         log.error(e.getMessage(), e);
-        return Result.failure(StringUtils.isBlank(e.getMessage()) ? ResultCode.ERR_DB_LOG.message()
+        return Result.failure(StringUtils.isBlank(e.getMessage()) ? ResultCodeEnum.ERR_DB_LOG.message()
                 : e.getMessage());
     }
 
@@ -28,7 +28,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = DataException.class)
     public Result<String> handleDataException(DataException e) {
         if (StringUtils.isBlank(e.getMessage())) {
-            return Result.failure(ResultCode.ERR_DATA_BASE.code(), ResultCode.ERR_DATA_BASE.message());
+            return Result.failure(ResultCodeEnum.ERR_DATA_BASE.code(), ResultCodeEnum.ERR_DATA_BASE.message());
         } else {
             return Result.failure(e.getCode(), e.getMessage());
         }
@@ -37,9 +37,22 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = SQLException.class)
     public Result<String> handleSqlException(SQLException e) {
         if (StringUtils.isBlank(e.getMessage())) {
-            return Result.failure(ResultCode.ERR_DATA_BASE.code(), ResultCode.ERR_DATA_BASE.message());
+            return Result.failure(ResultCodeEnum.ERR_DATA_BASE.code(), ResultCodeEnum.ERR_DATA_BASE.message());
         } else {
-            return Result.failure(ResultCode.ERR_DATA_BASE.code(), e.getMessage());
+            return Result.failure(ResultCodeEnum.ERR_DATA_BASE.code(), e.getMessage());
+        }
+    }
+
+    /**
+     * web异常的处理
+     */
+    @ExceptionHandler(value = WebException.class)
+    public Result<String> handleWebException(WebException e) {
+        log.error(e.getMessage(), e);
+        if (StringUtils.isBlank(e.getMessage())) {
+            return Result.failure(ResultCodeEnum.ERR_DB_LOG.code(), ResultCodeEnum.ERR_DB_LOG.message());
+        } else {
+            return Result.failure(e.getCode(), e.getMessage());
         }
     }
 
@@ -49,7 +62,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public Result<String> handleAllExceptions(Exception ex) {
         log.error(ex.getMessage(), ex);
-        return Result.failure(StringUtils.isBlank(ex.getMessage()) ? ResultCode.FAILURE.message()
+        return Result.failure(StringUtils.isBlank(ex.getMessage()) ? ResultCodeEnum.FAILURE.message()
                 : ex.getMessage());
     }
 }
