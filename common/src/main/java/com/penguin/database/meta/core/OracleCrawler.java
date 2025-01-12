@@ -4,6 +4,7 @@ import com.penguin.database.meta.DataBaseCrawler;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 import org.apache.commons.lang3.StringUtils;
 import schemacrawler.inclusionrule.RegularExpressionInclusionRule;
@@ -61,27 +62,17 @@ public class OracleCrawler extends AbstractSchemaCrawler implements DataBaseCraw
         // 获取Catalog
         Catalog catalog = SchemaCrawlerUtility.getCatalog(dataSource, schemaRetrievalOptions,
                 schemaCrawlerOptions, new Config());
-        Schema dbSchema = null;
-        for (final Schema schema : catalog.getSchemas()) {
-            String name = schema.getName();
-            if (StringUtils.isEmpty(name)) {
-                name = schema.getCatalogName();
-            }
-            if (name.equalsIgnoreCase(schemaName)) {
-                dbSchema = schema;
-                break;
-            }
-        }
-
-        if (dbSchema != null) {
-            for (final Table table : catalog.getTables(dbSchema)) {
-                if (table instanceof View) {
-                    //不需要加载视图
-                    continue;
-                }
-                allTables.add(table.getName());
-            }
-        }
+        // 获取scheme
+        Optional<Schema> dbSchema = catalog.getSchemas().stream()
+                .filter(schema -> schema.getName().equalsIgnoreCase(schemaName))
+                .findFirst();
+        // 添加表名
+        dbSchema.ifPresent(schema -> {
+            catalog.getTables(schema).stream()
+                    .filter(table -> !(table instanceof View)) // 过滤掉视图
+                    .map(Table::getName) // 获取表名
+                    .forEach(allTables::add); // 添加表名到 allTables 集合
+        });
         return allTables;
     }
 

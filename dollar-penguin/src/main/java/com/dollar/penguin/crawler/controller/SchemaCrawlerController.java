@@ -31,7 +31,7 @@ public class SchemaCrawlerController {
             return Result.success(schemaList);
         } catch (Throwable e) {
             log.error("get Schemas Or CateLogs error:{}", e.getMessage(), e);
-            return Result.failure("[获取所有数据库模式异常]");
+            return Result.failure("[获取数据库模式异常]");
         }
     }
 
