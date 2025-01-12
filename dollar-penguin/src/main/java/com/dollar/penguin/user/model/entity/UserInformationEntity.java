@@ -1,5 +1,6 @@
 package com.dollar.penguin.user.model.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import java.sql.Timestamp;
 import lombok.Data;
 
@@ -10,8 +11,9 @@ public class UserInformationEntity {
     private String userId;
     private String userName;
     private String nickName;
+    @JsonIgnore
     private String pwd;
     private String emailAddress;
-    private Timestamp createAt;
+    private Timestamp createdAt;
     private Timestamp updatedAt;
 }

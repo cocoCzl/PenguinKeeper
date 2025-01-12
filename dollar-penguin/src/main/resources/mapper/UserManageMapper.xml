@@ -33,4 +33,13 @@
     OR email_address = #{emailAddress}
   </select>
 
+  <select id="findUserInfo" resultType="com.dollar.penguin.user.model.entity.UserInformationEntity">
+    SELECT id,user_id,user_name,nick_name,email_address,created_at,updated_at FROM develop.user_information
+    WHERE 1=1
+    <if test="userId != null">AND user_id = #{userId}</if>
+    <if test="userName != null">AND user_name = #{userName}</if>
+    <if test="nickName != null">AND nick_name = #{nickName}</if>
+    <if test="emailAddress != null">AND email_address = #{emailAddress}</if>
+  </select>
+
 </mapper>

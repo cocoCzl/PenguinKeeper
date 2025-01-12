@@ -1,5 +1,6 @@
 package com.dollar.penguin.user.controller;
 
+import com.dollar.penguin.user.model.entity.UserInformationEntity;
 import com.dollar.penguin.user.model.vo.UserVo;
 import com.dollar.penguin.user.service.UserManageService;
 import com.dollar.penguin.util.Result;
@@ -42,5 +43,10 @@ public class UserManageController {
         } else {
             return Result.failure("[注册失败]");
         }
+    }
+
+    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    public Result<UserInformationEntity> userInfo() {
+        return Result.success(userManageService.userInfo());
     }
 }

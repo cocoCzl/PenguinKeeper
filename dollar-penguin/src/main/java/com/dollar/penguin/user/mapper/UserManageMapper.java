@@ -14,4 +14,9 @@ public interface UserManageMapper {
             @Param("nickName") String nickName, @Param("emailAddress") String emailAddress);
 
     int insertUser(UserInformationEntity userInformation);
+
+    UserInformationEntity findUserInfo(@Param("userId") String userId,
+            @Param("userName") String userName, @Param("nickName") String nickName,
+            @Param("emailAddress") String emailAddress);
+
 }

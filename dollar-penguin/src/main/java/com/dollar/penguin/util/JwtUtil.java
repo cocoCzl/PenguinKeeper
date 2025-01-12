@@ -24,7 +24,7 @@ public class JwtUtil {
     /**
      * 解析令牌
      */
-    public static Claim doParse(String token, String title) {
+    public static Claim doParse(String title, String token) {
         JWTVerifier jwtVerifier = JWT.require(Algorithm.HMAC256(KEY)).build();
         DecodedJWT decodedJWT = jwtVerifier.verify(token);
         Map<String, Claim> claimMap = decodedJWT.getClaims();

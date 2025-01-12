@@ -16,7 +16,7 @@ public class JwtTest {
         String title = "user";
         String token = JwtUtil.doGen(title, data);
         System.out.println(token);
-        Claim claim = JwtUtil.doParse(token, title);
+        Claim claim = JwtUtil.doParse(title, token);
         System.out.println(claim);
     }
 }

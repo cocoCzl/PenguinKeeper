@@ -9,6 +9,7 @@ import com.dollar.penguin.user.model.vo.UserVo;
 import com.dollar.penguin.user.service.UserManageService;
 import com.dollar.penguin.util.CipherUtil;
 import com.dollar.penguin.util.JwtUtil;
+import com.dollar.penguin.util.LoginContextHolder;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -64,6 +65,37 @@ public class UserManageServiceImpl implements UserManageService {
             throw new DataException(DataException.DATA_INSERT_FAILED, "User insert exception!");
         }
         return true;
+    }
+
+    @Override
+    public UserInformationEntity userInfo() {
+        Map<String, Object> data = LoginContextHolder.get();
+        if (log.isInfoEnabled()) {
+            log.info("user info:{}", data);
+        }
+        LoginTypeEnum loginType = LoginTypeEnum.parse((Integer) data.get("loginType"));
+        String param = (String) data.get("login");
+
+        String userId = null;
+        String userName = null;
+        String nickName = null;
+        String emailAddress = null;
+        switch (loginType) {
+            case USER_ID -> userId = param;
+            case USER_NAME -> userName = param;
+            case NICK_NAME -> nickName = param;
+            case EMAIL_ADDRESS -> emailAddress = param;
+            default -> {
+                log.error("TOKEN login type error. loginType:{}", loginType);
+                throw new WebException(WebException.TOKEN_DATA_FAILED, "login type error.");
+            }
+        }
+        UserInformationEntity entity = userManageMapper.findUserInfo(userId, userName, nickName, emailAddress);
+        if (entity == null) {
+            log.error("query user info error, param:{}, loginType:{}", param, loginType);
+            throw new DataException(DataException.DATA_SELECT_FAILED, "user info not found.");
+        }
+        return entity;
     }
 
     private void checkRegister(UserVo userVo) {
