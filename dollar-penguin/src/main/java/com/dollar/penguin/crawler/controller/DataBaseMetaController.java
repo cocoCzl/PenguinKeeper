@@ -8,9 +8,11 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -23,7 +25,7 @@ public class DataBaseMetaController {
     @Autowired
     private DataBaseMetaService dataBaseMetaService;
 
-    @RequestMapping(value = "/queryDataBase", method = RequestMethod.GET)
+    @GetMapping(value = "/queryDataBase")
     public Result<PageInfo<DataBaseEntity>> queryDataBase(@RequestParam(value = "code", required = false) String code,
             @RequestParam(value = "name", required = false) String name,
             @RequestParam(value = "iDisplayStart", required = true) Integer iDisplayStart,
@@ -36,7 +38,7 @@ public class DataBaseMetaController {
         return Result.success(dataList);
     }
 
-    @RequestMapping(value = "/insertDataBase", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/insertDataBase", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Result<String> insertDataBase(@RequestBody DataBaseVo dataBaseVo) {
         if (log.isInfoEnabled()) {
@@ -50,7 +52,7 @@ public class DataBaseMetaController {
         }
     }
 
-    @RequestMapping(value = "/modifyDataBase", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = "/modifyDataBase", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Result<String> modifyDataBase(@RequestBody DataBaseVo dataBaseVo) {
         if (log.isInfoEnabled()) {
@@ -64,7 +66,7 @@ public class DataBaseMetaController {
         }
     }
 
-    @RequestMapping(value = "/deleteDataBase", method = RequestMethod.GET)
+    @GetMapping(value = "/deleteDataBase")
     public Result<String> deleteDataBase(@RequestParam(value = "id", required = true) Integer id) {
         if (log.isInfoEnabled()) {
             log.info("deleteDataBase, id:{}", id);

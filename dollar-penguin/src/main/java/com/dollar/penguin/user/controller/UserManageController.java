@@ -7,9 +7,10 @@ import com.dollar.penguin.util.Result;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,7 +22,7 @@ public class UserManageController {
     @Autowired
     private UserManageService userManageService;
 
-    @RequestMapping(value = "/login", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/login", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Result<String> login(@RequestBody UserVo userVo) {
         if (log.isInfoEnabled()) {
@@ -31,7 +32,7 @@ public class UserManageController {
         return Result.success(token);
     }
 
-    @RequestMapping(value = "/register", method = RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PostMapping(value = "/register", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
     public Result<String> register(@RequestBody UserVo userVo) {
         if (log.isInfoEnabled()) {
@@ -45,7 +46,7 @@ public class UserManageController {
         }
     }
 
-    @RequestMapping(value = "/userInfo", method = RequestMethod.GET)
+    @GetMapping(value = "/userInfo")
     public Result<UserInformationEntity> userInfo() {
         return Result.success(userManageService.userInfo());
     }
