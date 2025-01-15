@@ -56,7 +56,7 @@
 
     <dependency>
       <groupId>com.penguin.keeper</groupId>
-      <artifactId>common</artifactId>
+      <artifactId>penguin-common</artifactId>
       <version>${revision}</version>
     </dependency>
 

@@ -18,7 +18,7 @@
 
   <modules>
     <module>dollar-penguin</module>
-    <module>common</module>
+    <module>penguin-common</module>
   </modules>
 
   <properties>
