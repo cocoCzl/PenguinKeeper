@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 @Slf4j
@@ -41,9 +42,12 @@ public class DataBaseMetaServiceImpl implements DataBaseMetaService {
     @Override
     public boolean insertDataBaseInformation(DataBaseVo dataBaseVo) {
         // 数据验证
-        checkData(dataBaseVo);
+        DataBaseEntity dataBaseEntity = metaMapper.queryDataBaseByName(dataBaseVo.getDataBaseName());
+        if (dataBaseEntity != null) {
+            throw new DataException(DataException.DATA_INSERT_FAILED, "DataBaseByName already exists!");
+        }
         // 插入数据
-        DataBaseEntity dataBaseEntity = buildDataBaseEntity(dataBaseVo);
+        dataBaseEntity = buildDataBaseEntity(dataBaseVo);
         int rsCount = metaMapper.insertDataBase(dataBaseEntity);
         if (rsCount != 1) {
             throw new DataException(DataException.DATA_INSERT_FAILED, "DataBase insert exception!");
@@ -53,8 +57,6 @@ public class DataBaseMetaServiceImpl implements DataBaseMetaService {
 
     @Override
     public boolean modifyDataBaseInformation(DataBaseVo dataBaseVo) {
-        // 数据验证
-        checkData(dataBaseVo);
         // 插入数据
         DataBaseEntity dataBaseEntity = buildDataBaseEntity(dataBaseVo);
         dataBaseEntity.setId(dataBaseVo.getId());
@@ -67,33 +69,11 @@ public class DataBaseMetaServiceImpl implements DataBaseMetaService {
     }
 
     @Override
+    @Transactional
     public boolean deleteDataBaseInformation(int id) {
         // 删除数据库信息表
-        int count = metaMapper.deleteDataBase(id);
-        if (count != 1) {
-            throw new DataException(DataException.DATA_DELETE_FAILED, "DataBase delete exception!");
-        }
-        if (log.isInfoEnabled()) {
-            log.info("delete success, count:{}", count);
-        }
+        metaMapper.deleteDataBase(id);
         return true;
-    }
-
-    private void checkData(DataBaseVo dataBaseVo) {
-        if (StringUtils.isEmpty(dataBaseVo.getUrl())) {
-            throw new DataException(DataException.DATA_BASE_PARAMETER_FAILED, "URL Is Null!");
-        }
-        if (StringUtils.isEmpty(dataBaseVo.getPwd())) {
-            throw new DataException(DataException.DATA_BASE_PARAMETER_FAILED, "Password Is Null!");
-        }
-        if (StringUtils.isEmpty(dataBaseVo.getUserName())) {
-            throw new DataException(DataException.DATA_BASE_PARAMETER_FAILED, "UserName Is Null!");
-        }
-
-        DataBaseEntity dataBaseEntity = metaMapper.queryDataBaseByName(dataBaseVo.getDataBaseName());
-        if (dataBaseEntity != null) {
-            throw new DataException(DataException.DATA_INSERT_FAILED, "DataBaseByName already exists!");
-        }
     }
 
     private DataBaseEntity buildDataBaseEntity(DataBaseVo dataBaseVo) {

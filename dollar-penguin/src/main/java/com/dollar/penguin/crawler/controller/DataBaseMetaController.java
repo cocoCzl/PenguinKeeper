@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -40,7 +41,7 @@ public class DataBaseMetaController {
 
     @PostMapping(value = "/insertDataBase", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Result<String> insertDataBase(@RequestBody DataBaseVo dataBaseVo) {
+    public Result<String> insertDataBase(@RequestBody @Validated(DataBaseVo.Add.class) DataBaseVo dataBaseVo) {
         if (log.isInfoEnabled()) {
             log.info("insertDataBase, dataBaseVo:{}", dataBaseVo);
         }
@@ -54,7 +55,7 @@ public class DataBaseMetaController {
 
     @PutMapping(value = "/modifyDataBase", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseBody
-    public Result<String> modifyDataBase(@RequestBody DataBaseVo dataBaseVo) {
+    public Result<String> modifyDataBase(@RequestBody @Validated(DataBaseVo.Update.class) DataBaseVo dataBaseVo) {
         if (log.isInfoEnabled()) {
             log.info("modifyDataBase, dataBaseVo:{}", dataBaseVo);
         }
